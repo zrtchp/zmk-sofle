@@ -35,23 +35,83 @@
         #sensor-binding-cells = <0>;
         bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
 
-        tap-ms = <100>;
+        tap-ms = <32>;
+        label = "scroll_v";
+    };
+
+    mouse_scroll_h: mouse_scroll_h {
+        compatible = "zmk,behavior-sensor-rotate";
+        label = "MOUSE_SCROLL_H";
+        #sensor-binding-cells = <0>;
+        bindings = <&msc SCRL_RIGHT>, <&msc SCRL_LEFT>;
+
+        tap-ms = <32>;
+    };
+
+    right_layer: right_layer {
+        compatible = "zmk,behavior-tap-dance";
+        label = "RIGHT_LAYER";
+        #binding-cells = <0>;
+        bindings = <&mo 1>, <&mo 3>, <&toggle_my_computer>;
+
+        tapping-term-ms = <400>;
+    };
+
+    ctrl_shift_alt_combo: ctrl_shift_alt_combo {
+        compatible = "zmk,behavior-tap-dance";
+        label = "CTRL_SHIFT_ALT_COMBO";
+        #binding-cells = <0>;
+        bindings = <&kp LC(LSHFT)>, <&kp LC(LEFT_ALT)>, <&kp LC(LA(LSHFT))>;
+
+        tapping-term-ms = <400>;
+    };
+
+    left_layer: left_layer {
+        compatible = "zmk,behavior-tap-dance";
+        label = "LEFT_LAYER";
+        #binding-cells = <0>;
+        bindings = <&mo 1>, <&mo 4>, <&toggle_my_computer>;
+
+        tapping-term-ms = <400>;
+    };
+
+    shift_ctrl_shift_alt_combo: shift_ctrl_shift_alt_combo {
+        compatible = "zmk,behavior-tap-dance";
+        label = "SHIFT_CTRL_SHIFT_ALT_COMBO";
+        #binding-cells = <0>;
+        bindings = <&kp RIGHT_SHIFT>, <&kp LC(LEFT_ALT)>, <&kp LC(LA(LSHFT))>;
+
+        tapping-term-ms = <400>;
+    };
+
+    excel_date_tap: excel_date_tap {
+        compatible = "zmk,behavior-tap-dance";
+        label = "EXCEL_DATE_TAP";
+        #binding-cells = <0>;
+        bindings = <&excel_date>, <&excel_year>, <&excel_month>, <&excel_day>;
+
+        tapping-term-ms = <400>;
+    };
+
+    excel_sum_tap: excel_sum_tap {
+        compatible = "zmk,behavior-tap-dance";
+        label = "EXCEL_SUM_TAP";
+        #binding-cells = <0>;
+        bindings = <&excel_sumifs>, <&excel_sumproduct>;
+
+        tapping-term-ms = <400>;
+    };
+
+    excel_text_tap: excel_text_tap {
+        compatible = "zmk,behavior-tap-dance";
+        label = "EXCEL_TEXT_TAP";
+        #binding-cells = <0>;
+        bindings = <&excel_text>, <&excel_textjoin>, <&excel_textsplit>;
+
+        tapping-term-ms = <350>;
     };
 
     behaviors {
-        rsr_vol: rsr_vol {
-            compatible = "zmk,behavior-runtime-sensor-rotate";
-            #sensor-binding-cells = <0>;
-            tap-ms = <5>;
-            cw-binding = <&kp C_VOL_UP>;
-            ccw-binding = <&kp C_VOL_DN>;
-        };
-
-        rsr_trans: rsr_trans {
-            compatible = "zmk,behavior-runtime-sensor-rotate";
-            #sensor-binding-cells = <0>;
-            tap-ms = <0>;
-        };
     };
 
     combos {
@@ -64,88 +124,235 @@
     };
 
     macros {
-        SHIFT_MCLK: SHIFT_MCLK {
+        toggle_my_computer: toggle_my_computer {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings =
-                <&macro_press>,
-                <&kp LEFT_SHIFT>,
-                <&macro_press>,
-                <&mkp MB3>,
-                <&macro_pause_for_release>,
-                <&macro_release>,
-                <&kp LEFT_SHIFT &mkp MB3>;
+                <&kp LA(LS(LC(BACKSLASH)))>,
+                <&macro_wait_time 300>,
+                <&out OUT_TOG>;
 
-            label = "SHIFT_MCLK";
+            label = "TOGGLE_MY_COMPUTER";
+        };
+
+        my_string: pi_value {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&kp Z &kp S &kp D &kp C &kp X &kp DOT &kp N1 &kp N2 &kp N1>,
+                <&macro_wait_time 50>,
+                <&kp ENTER>;
+
+            label = "PI_VALUE";
+        };
+
+        switch_bt1: switch_bt1 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 0 &out OUT_BLE>;
+            label = "SWITCH_BT1";
+        };
+
+        switch_bt2: switch_bt2 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 1 &out OUT_BLE>;
+            label = "SWITCH_BT2";
+        };
+
+        switch_bt3: switch_bt3 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 2 &out OUT_BLE>;
+            label = "SWITCH_BT3";
+        };
+
+        excel_offset: excel_offset {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp O &kp F &kp F &kp S &kp E &kp T &kp LPAR>;
+            label = "EXCEL_OFFSET";
+        };
+
+        excel_sumifs: excel_sumifs {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp S &kp U &kp M &kp I &kp F &kp S &kp LPAR>;
+            label = "EXCEL_SUMIFS";
+        };
+
+        excel_countifs: excel_countifs {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp C &kp O &kp U &kp N &kp T &kp I &kp F &kp S &kp LPAR>;
+            label = "EXCEL_COUNTIFS";
+        };
+
+        excel_xmatch: excel_xmatch {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp X &kp M &kp A &kp T &kp C &kp H &kp LPAR>;
+            label = "EXCEL_XMATCH";
+        };
+
+        excel_vlookup: excel_vlookup {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp V &kp L &kp O &kp O &kp K &kp U &kp P &kp LPAR>;
+            label = "EXCEL_VLOOKUP";
+        };
+
+        excel_xlookup: excel_xlookup {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp X &kp L &kp O &kp O &kp K &kp U &kp P &kp LPAR>;
+            label = "EXCEL_XLOOKUP";
+        };
+
+        excel_text: excel_text {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp T &kp E &kp X &kp T &kp LPAR>;
+            label = "EXCEL_TEXT";
+        };
+
+        excel_textjoin: excel_textjoin {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp T &kp E &kp X &kp T &kp J &kp O &kp I &kp N &kp LPAR>;
+            label = "EXCEL_TEXTJOIN";
+        };
+
+        excel_date: excel_date {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp D &kp A &kp T &kp E &kp LPAR>;
+            label = "EXCEL_DATE";
+        };
+
+        excel_year: excel_year {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp Y &kp E &kp A &kp R &kp LPAR>;
+            label = "EXCEL_YEAR";
+        };
+
+        excel_month: excel_month {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp M &kp O &kp N &kp T &kp H &kp LPAR>;
+            label = "EXCEL_MONTH";
+        };
+
+        excel_day: excel_day {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp D &kp A &kp Y &kp LPAR>;
+            label = "EXCEL_DAY";
+        };
+
+        excel_sumproduct: excel_sumproduct {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp S &kp U &kp M &kp P &kp R &kp O &kp D &kp U &kp C &kp T &kp LPAR>;
+            label = "EXCEL_SUMPRODUCT";
+        };
+
+        excel_average: excel_average {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp A &kp V &kp E &kp R &kp A &kp G &kp E &kp LPAR>;
+            label = "EXCEL_AVERAGE";
+        };
+
+        excel_index: excel_index {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp I &kp N &kp D &kp E &kp X &kp LPAR>;
+            label = "EXCEL_INDEX";
+        };
+
+        excel_textsplit: excel_textsplit {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp T &kp E &kp X &kp T &kp S &kp P &kp L &kp I &kp T &kp LPAR>;
+            label = "EXCEL_TEXTSPLIT";
+        };
+
+        excel_filter: excel_filter {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&none>;
+            label = "EXCEL_FILTER";
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        layer0 {
+        BASE {
             bindings = <
-&kp ESC     &kp N1     &kp N2        &kp N3        &kp N4  &kp N5       &kp UP_ARROW     &kp N6     &kp N7     &kp N8     &kp N9           &kp N0      &kp BACKSPACE
-&kp TAB     &kp Q      &kp W         &kp E         &kp R   &kp T        &kp DOWN_ARROW   &kp Y      &kp U      &kp I      &kp O            &kp P       &kp BSLH
-&kp CAPS    &kp A      &kp S         &kp D         &kp F   &kp G        &kp LEFT_ARROW   &kp H      &kp J      &kp K      &kp L            &kp SEMI    &kp APOS
-&kp LSHFT   &kp Z      &kp X         &kp C         &kp V   &kp B        &kp RIGHT_ARROW  &kp N      &kp M      &kp COMMA  &kp DOT          &kp FSLH    &kp ENTER
-&kp C_MUTE  &kp LCTRL  &kp LEFT_GUI  &kp LEFT_ALT  &mo 1   &kp SPACE    &kp ENTER        &kp SPACE  &kp ENTER  &mo 2      &kp RIGHT_SHIFT  &kp DELETE
+&kp ESC                &kp N1     &kp N2        &kp N3        &kp N4       &kp N5         &kp UP_ARROW     &kp N6     &kp N7     &kp N8        &kp N9                       &kp N0      &kp BACKSPACE
+&kp TAB                &kp Q      &kp W         &kp E         &kp R        &kp T          &kp DOWN_ARROW   &kp Y      &kp U      &kp I         &kp O                        &kp P       &kp BSLH
+&ctrl_shift_alt_combo  &kp A      &kp S         &kp D         &kp F        &kp G          &kp LEFT_ARROW   &kp H      &kp J      &kp K         &kp L                        &kp SEMI    &kp APOS
+&kp LSHFT              &kp Z      &kp X         &kp C         &kp V        &kp B          &kp RIGHT_ARROW  &kp N      &kp M      &kp COMMA     &kp DOT                      &kp FSLH    &kp RCTRL
+&my_string             &kp LCTRL  &kp LEFT_GUI  &kp LEFT_ALT  &left_layer  &lt 2 SPACE    &kp ENTER        &kp SPACE  &kp ENTER  &right_layer  &shift_ctrl_shift_alt_combo  &kp DELETE
             >;
 
-            sensor-bindings = <&rsr_vol &rsr_trans>;
-            display-name = "LAYER0";
+            sensor-bindings = <&scroll_encoder>;
+            display-name = "BASE";
         };
 
-        layer_1 {
+        ADVANCE {
             bindings = <
-&kp GRAVE   &kp F1           &kp F2          &kp F3           &kp F4           &kp F5             &mmv MOVE_UP     &kp F6           &kp F7           &kp F8      &kp F9     &kp F10           &trans
-&trans      &kp GRAVE        &mkp LCLK       &mkp MCLK        &mkp RCLK        &mkp MB4           &mmv MOVE_DOWN   &kp PG_UP        &kp END          &kp UP      &kp HOME   &kp MINUS         &kp EQUAL
-&trans      &kp TILDE        &trans          &trans           &trans           &mkp MB5           &mmv MOVE_LEFT   &kp PG_DN        &kp LEFT         &kp DOWN    &kp RIGHT  &kp LEFT_BRACKET  &kp RIGHT_BRACKET
-&trans      &rgb_ug RGB_OFF  &rgb_ug RGB_ON  &rgb_ug RGB_EFF  &rgb_ug RGB_EFR  &rgb_ug RGB_SPI    &mmv MOVE_RIGHT  &rgb_ug RGB_BRI  &rgb_ug RGB_BRD  &kp INSERT  &kp F11    &kp F12           &trans
-&kp C_MUTE  &trans           &trans          &trans           &trans           &trans             &mkp LCLK        &trans           &trans           &trans      &trans     &trans
+&kp GRAVE  &kp F1        &kp F2       &kp F3         &kp F4         &kp F5           &switch_bt1   &kp F6            &kp F7          &kp F8         &kp F9             &kp F10  &trans
+&trans     &kp LS(F1)    &kp LS(F2)   &kp LS(F3)     &none          &kp LA(F4)       &switch_bt2   &none             &none           &kp LA(EQUAL)  &kp LS(F9)         &kp F11  &kp F12
+&trans     &kp HOME      &kp END      &kp PG_UP      &kp PG_DN      &kp LS(RC(L))    &switch_bt3   &kp LEFT_BRACKET  &kp MINUS       &kp EQUAL      &kp RIGHT_BRACKET  &none    &none
+&trans     &kp LC(HOME)  &kp LC(END)  &kp LC(PG_UP)  &kp LC(PG_DN)  &kp LC(GRAVE)    &bt BT_NXT    &kp LEFT_BRACE    &kp UNDERSCORE  &kp PLUS       &kp RIGHT_BRACE    &none    &trans
+&kp CAPS   &trans        &trans       &trans         &trans         &trans           &out OUT_USB  &trans            &kp LC(ENTER)   &to 2          &trans             &trans
             >;
 
-            sensor-bindings = <&rsr_vol &rsr_trans>;
-            display-name = "LAYER1";
+            display-name = "ADVANCE";
+            sensor-bindings = <&scroll_encoder>;
         };
 
-        layer_2 {
+        NUMPAD {
             bindings = <
-&kp TILDE  &bt BT_SEL 0  &bt BT_SEL 1    &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &mmv MOVE_UP     &kp F6  &kp F7  &kp F8      &kp F9     &kp F10      &trans
-&trans     &bt BT_CLR    &bt BT_CLR_ALL  &trans        &trans        &trans          &mmv MOVE_DOWN   &trans  &trans  &kp F11     &kp F12    &kp UNDER    &kp PLUS
-&trans     &out OUT_USB  &out OUT_BLE    &trans        &trans        &trans          &mmv MOVE_LEFT   &trans  &trans  &trans      &trans     &kp LBRC     &kp RBRC
-&trans     &sys_reset    &trans          &bootloader   &trans        &trans          &mmv MOVE_RIGHT  &trans  &trans  &sys_reset  &soft_off  &bootloader  &trans
-&trans     &trans        &trans          &trans        &trans        &trans          &mkp LCLK        &trans  &trans  &trans      &trans     &trans
+&trans  &trans  &kp F2  &trans  &kp F4  &kp F9    &trans          &kp CARET              &kp AMPERSAND    &kp KP_SLASH     &kp KP_MULTIPLY  &kp KP_MINUS  &trans
+&trans  &trans  &none   &none   &none   &trans    &trans          &kp DOLLAR             &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &kp EQUAL     &kp COLON
+&trans  &none   &none   &none   &none   &none     &trans          &kp LEFT_PARENTHESIS   &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp KP_PLUS   &kp DOUBLE_QUOTES
+&trans  &trans  &trans  &trans  &trans  &trans    &trans          &kp RIGHT_PARENTHESIS  &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp KP_ENTER  &kp AT_SIGN
+&trans  &trans  &trans  &trans  &to 0   &trans    &kp KP_NUMLOCK  &trans                 &trans           &kp KP_NUMBER_0  &to 0            &kp KP_DOT
             >;
 
-            display-name = "LAYER2";
-            sensor-bindings = <&rsr_vol &rsr_trans>;
+            sensor-bindings = <&inc_dec_kp LC(PAGE_DOWN) LC(PAGE_UP)>;
+            label = "NUMPAD";
         };
 
-        layer_3 {
+        DEVICE {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&out OUT_TOG  &bt BT_PRV       &bt BT_NXT       &bt BT_SEL 0     &bt BT_CLR       &bt BT_CLR_ALL     &mmv MOVE_UP     &trans  &trans  &trans  &trans  &trans  &trans
+&trans        &trans           &trans           &trans           &trans           &trans             &mmv MOVE_DOWN   &trans  &trans  &trans  &trans  &trans  &sys_reset
+&trans        &trans           &soft_off        &trans           &trans           &trans             &mmv MOVE_LEFT   &trans  &trans  &trans  &trans  &trans  &trans
+&trans        &trans           &trans           &trans           &trans           &bootloader        &mmv MOVE_RIGHT  &trans  &trans  &trans  &trans  &trans  &soft_off
+&trans        &rgb_ug RGB_BRD  &rgb_ug RGB_BRI  &rgb_ug RGB_EFR  &rgb_ug RGB_EFF  &rgb_ug RGB_TOG    &mkp LCLK        &trans  &trans  &to 0   &trans  &trans
             >;
 
-            display-name = "LAYER3";
-            sensor-bindings = <&rsr_vol &rsr_trans>;
+            sensor-bindings = <&mouse_scroll_h>;
+            label = "BT&LED";
         };
 
-        layer_4 {
+        XLS {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&none      &none           &kp F2          &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp BACKSPACE      &none  &none  &none          &none         &none          &none  &trans
+&none      &kp SLASH       &kp ASTERISK    &kp MINUS             &kp PLUS               &excel_text_tap    &none  &none  &none          &excel_index  &excel_offset  &none  &none
+&none      &excel_average  &excel_sum_tap  &excel_date_tap       &excel_filter          &none              &none  &none  &none          &none         &none          &none  &none
+&kp ENTER  &kp EQUAL       &excel_xlookup  &excel_countifs       &excel_vlookup         &kp COMMA          &none  &none  &excel_xmatch  &none         &none          &none  &none
+&none      &none           &none           &none                 &none                  &none              &none  &none  &none          &none         &none          &none
             >;
 
-            display-name = "LAYER4";
-            sensor-bindings = <&rsr_vol &rsr_trans>;
+            label = "XLS";
+            sensor-bindings = <&mouse_scroll_h>;
         };
     };
 };
